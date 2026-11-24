@@ -93,5 +93,24 @@ preprocessing.set_output(transform="pandas")
 # %%
 train_df_processed = preprocessing.fit_transform(train_df)
 # %%[markdown]
-# Aplicando o 
+# # Treinamento do modelo
+# %%[markdown]
+# ## Modelo n 1
+# Esse modelo terá todos os dados da base treinamento
+# %%
+# Separando os alvos dos preditores
+train_label = train_df_processed["Energy Consumption"].copy()
+train = train_df_processed.drop("Energy Consumption", axis=1)
+# %%
+from sklearn.linear_model import LinearRegression
+# %%
+lin_reg = LinearRegression()
+# %%
+lin_reg.fit(train, train_label)
+# %%
+train_predictions = lin_reg.predict(train)
+# %%
+print(type(train_predictions))
+print(f"Valores previstos \n{train_predictions[:5].round(2)}")
+print(f"Valores originais \n{train_label.iloc[:5].values}")
 # %%
