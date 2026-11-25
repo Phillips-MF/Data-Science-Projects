@@ -113,4 +113,38 @@ train_predictions = lin_reg.predict(train)
 print(type(train_predictions))
 print(f"Valores previstos \n{train_predictions[:5].round(2)}")
 print(f"Valores originais \n{train_label.iloc[:5].values}")
+# %%[markdown]
+# ## Avaliação do modelo N1
+# %%
+from sklearn.metrics import mean_squared_error
+# %%
+lin_mse = mean_squared_error(train_label, train_predictions)
+# %%
+print(f"Erro médio quadrático {lin_mse}")
+# %%[markdown]
+# ## Modelo n2 
+# Para esse modelo será retirada a coluna Average Temperature.
+# %%
+train_2 = train_df_processed.drop(["Energy Consumption", "Average Temperature"], axis=1)
+# %%
+train_2.head()
+# %%
+lin_reg_2 = LinearRegression()
+# %%
+lin_reg_2.fit(train_2, train_label)
+# %%
+train_2_predictions = lin_reg_2.predict(train_2)
+# %%
+print(f"Valores previstos \n{train_2_predictions[:5].round(2)}")
+print(f"Valores originais \n{train_label.iloc[:5].values}")
+# %%[markdown]
+# ## Avaliação modelo N2
+# %%
+lin_2_mse = mean_squared_error(train_label, train_2_predictions)
+# %%
+print(f"Erro médio quadrático {lin_2_mse}")
+# %%[markdown]
+# # Testando os modelos com dados de teste
+# %%
+test_df
 # %%
