@@ -157,11 +157,20 @@ test_df_preprocessed = preprocessing.transform(test)
 test_df_preprocessed.head()
 # %%
 #Modelo 1
-lin_reg.predict(test_df_preprocessed)
+test_predictions = lin_reg.predict(test_df_preprocessed)
 # %%
 # Modelo 2
 test_df_preprocessed
 # %%
 test_df_preprocessed_2 = test_df_preprocessed.drop("Average Temperature", axis=1)
 # %%
-lin_reg_2.predict(test_df_preprocessed_2)
+test_predictions_2 = lin_reg_2.predict(test_df_preprocessed_2)
+# %%[markdown]
+# # Avaliação do modelo n1 em testes
+# %%
+test_results = mean_squared_error(test_label, test_predictions)
+print(f"Resultado do modelo de regressão linear número 1 {test_results}")
+# %%
+test_results_2 = mean_squared_error(test_label, test_predictions_2)
+print(f"Resultados do modelo de regressão linear número 2 {test_results_2}")
+# %%
