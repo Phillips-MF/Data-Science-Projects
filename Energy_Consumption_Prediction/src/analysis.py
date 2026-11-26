@@ -91,7 +91,11 @@ preprocessing = ColumnTransformer(
 # %%
 preprocessing.set_output(transform="pandas")
 # %%
+train_label = train_df["Energy Consumption"].copy()
+train_df = train_df.drop("Energy Consumption", axis=1)
 train_df_processed = preprocessing.fit_transform(train_df)
+# %%
+train_df_processed.head()
 # %%[markdown]
 # # Treinamento do modelo
 # %%[markdown]
@@ -99,16 +103,14 @@ train_df_processed = preprocessing.fit_transform(train_df)
 # Esse modelo terá todos os dados da base treinamento
 # %%
 # Separando os alvos dos preditores
-train_label = train_df_processed["Energy Consumption"].copy()
-train = train_df_processed.drop("Energy Consumption", axis=1)
 # %%
 from sklearn.linear_model import LinearRegression
 # %%
 lin_reg = LinearRegression()
 # %%
-lin_reg.fit(train, train_label)
+lin_reg.fit(train_df_processed, train_label)
 # %%
-train_predictions = lin_reg.predict(train)
+train_predictions = lin_reg.predict(train_df_processed)
 # %%
 print(type(train_predictions))
 print(f"Valores previstos \n{train_predictions[:5].round(2)}")
@@ -125,7 +127,7 @@ print(f"Erro médio quadrático {lin_mse}")
 # ## Modelo n2 
 # Para esse modelo será retirada a coluna Average Temperature.
 # %%
-train_2 = train_df_processed.drop(["Energy Consumption", "Average Temperature"], axis=1)
+train_2 = train_df_processed.drop("Average Temperature", axis=1)
 # %%
 train_2.head()
 # %%
@@ -148,3 +150,18 @@ print(f"Erro médio quadrático {lin_2_mse}")
 # %%
 test_df
 # %%
+test = test_df.drop("Energy Consumption", axis=1)
+test_label = test_df["Energy Consumption"].copy()
+test_df_preprocessed = preprocessing.transform(test)
+# %%
+test_df_preprocessed.head()
+# %%
+#Modelo 1
+lin_reg.predict(test_df_preprocessed)
+# %%
+# Modelo 2
+test_df_preprocessed
+# %%
+test_df_preprocessed_2 = test_df_preprocessed.drop("Average Temperature", axis=1)
+# %%
+lin_reg_2.predict(test_df_preprocessed_2)
